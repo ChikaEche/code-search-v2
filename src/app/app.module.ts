@@ -14,14 +14,17 @@ import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SharedModule } from './shared/shared.module';
-import { AngularFireAuthModule } from "@angular/fire/compat/auth"
+import { ProjectComponent } from './project/project.component';
+import { ViewComponent } from './view/view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProjectComponent,
+    ViewComponent
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -33,7 +36,6 @@ import { AngularFireAuthModule } from "@angular/fire/compat/auth"
     NbEvaIconsModule,
     AppRoutingModule,
     SharedModule,
-    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

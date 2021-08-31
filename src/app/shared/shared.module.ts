@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbLayoutModule, NbButtonModule, NbCardModule } from '@nebular/theme';
+import { 
+  NbLayoutModule,
+  NbButtonModule, 
+  NbCardModule,
+  NbIconModule 
+} from '@nebular/theme';
 
 
 const imports = [
   CommonModule,
   NbLayoutModule,
   NbButtonModule,
-  NbCardModule
+  NbCardModule,
+  NbIconModule
 ];
 const declarations: any[] = [];
 @NgModule({
