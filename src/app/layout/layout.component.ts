@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public readonly authService: AuthService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  logOut() {
+    this.authService.logOut().pipe(
+      tap(() => this.router.navigate(['/login']))
+    ).subscribe()
   }
 
 }

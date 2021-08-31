@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo, AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
+import { AuthGuard } from './core/guards/auth.guard';
+import { LoginGuard } from './core/guards/login.guard';
 
 const redirectUnauthorized = () => {
   return redirectUnauthorizedTo(['/login'])
@@ -15,15 +17,15 @@ const redirectAuthorized = () => {
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
-    //canActivate: [AngularFireAuthGuard]
+    canActivate: [LoginGuard]
   },
-  // {
-  //   path: '', 
-  //   component: DashboardComponent,
-  //   //canActivate: [AngularFireAuthGuard]
-  // }
+  {
+    path: '', 
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({

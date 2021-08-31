@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import { AuthService } from '../core/services/auth.service';
 
 @Component({
@@ -9,14 +11,17 @@ import { AuthService } from '../core/services/auth.service';
 export class LoginComponent implements OnInit {
 
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) { }
 
   ngOnInit(): void {
   }
 
   login() {
-    this.authService.loginWithGithub()
+    this.authService.loginWithGithub().pipe(
+      tap(() => this.router.navigate(['']))
+    ).subscribe()
   }
 
 }
