@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "code-search-c2f82": {
+      "hosting": {
+        "code-search": [
+          "code-search-c2f82"
+        ]
+      }
+    }
+  }
+}
