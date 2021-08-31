@@ -1,5 +1,13 @@
-.header {
+.header, .project_name {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.project_name {
+  margin-top: 5px;
+}
+
+.project_name button {
+  margin-left: 5px;
 }

@@ -4,10 +4,18 @@
       <h5>Projects</h5>
     </div>
     <div>
-      <button nbButton>
+      <button nbButton (click)="toogleProject = !toogleProject">
         <nb-icon icon="plus-outline"></nb-icon>
         Add Project
       </button>
+      <div *ngIf="toogleProject" class="project_name">
+        <input
+         type="text" 
+         nbInput placeholder="Project name"
+         [(ngModel)]="projectName"
+        >
+        <button nbButton (click)="createProject()">Create</button>
+      </div>
     </div>
   </div>
 </div>

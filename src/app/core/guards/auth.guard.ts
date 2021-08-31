@@ -13,13 +13,12 @@ export class AuthGuard implements CanActivate {
     private readonly authService: AuthService,
     private readonly router: Router
   ) {}
-  
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
       return this.authService.user$.pipe(
         map((user) => {
-          console.log({user})
           if(user) {
             return true;
           } else {

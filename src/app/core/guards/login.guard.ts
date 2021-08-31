@@ -18,7 +18,6 @@ export class LoginGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> {
       return this.authService.user$.pipe(
         map((user) => {
-          console.log({user})
           if(!user) {
             return true;
           } else {
