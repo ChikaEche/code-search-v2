@@ -3,7 +3,7 @@ import { Auth, authState, signInWithPopup, signOut } from '@angular/fire/auth';
 import * as firebase from 'firebase/auth';
 import { from, Observable, of } from 'rxjs';
 import { User } from '../interfaces/user';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
 import { Firestore, doc, docData, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
@@ -27,7 +27,7 @@ export class AuthService {
       }),
       map((user) => user as User)
     )
-   }
+  }
 
   loginWithGithub() {
     return from(signInWithPopup(this.auth, new firebase.GithubAuthProvider)).pipe(

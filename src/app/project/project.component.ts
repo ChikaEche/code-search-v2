@@ -1,28 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { User } from 'firebase/auth';
 import { of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Project } from '../core/interfaces/project';
+import { AuthService } from '../core/services/auth.service';
 import { ProjectService } from '../core/services/project.service';
+import { UserService } from '../core/services/user.service';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
-export class ProjectComponent {
+export class ProjectComponent implements OnInit {
 
   projectName = '';
   toogleProject = false;
+  projects: Project[] = [];
+  userId = '';
 
   constructor(
-    private readonly projectService: ProjectService
-  ) { }
+    private readonly projectService: ProjectService,
+    private readonly authService: AuthService
+  ) { 
+    
+  }
+
+  ngOnInit() {
+    this.authService.user$.pipe(
+      tap(({ userId }) => {
+        this.userId = userId;
+        this.getProjects(userId)
+      })
+    ).subscribe()
+  }
 
   createProject() {
     this.projectService.createProject(this.projectName).pipe(
-      map(() => console.log('project created')),
+      map(() => {
+        this.projects = [
+          ...this.projects, 
+          {
+            name: this.projectName,
+            userId: this.userId,
+            files: {}
+          }
+        ]
+      }),
       catchError((err) => {
         console.error('Error while creating project', {err})
         return of(null)
+      })
+    ).subscribe()
+  }
+
+  getProjects(userId: string) {
+    this.projectService.getProjects(userId).pipe(
+      tap((doc) => {
+        doc.forEach((project) => this.projects = [...this.projects, project.data() as Project])
       })
     ).subscribe()
   }

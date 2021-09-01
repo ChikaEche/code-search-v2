@@ -17,10 +17,8 @@ export class MeilisearchService {
   constructor() { }
 
   createIndex() {
-    let indexId = generateRandomString();
-    indexId = `${indexId}${Date.now()}`;
-    console.log({indexId})
-
-    return from(this.meilisearch.createIndex(indexId));
+    return from(
+      this.meilisearch.createIndex(`${generateRandomString()}${Date.now()}`)
+    );
   }
 }

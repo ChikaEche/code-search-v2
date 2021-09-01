@@ -1,5 +1,5 @@
-<div class="project__layout">
-  <div class="header">
+<nb-card class="project__layout">
+  <nb-card-header class="header">
     <div>
       <h5>Projects</h5>
     </div>
@@ -8,14 +8,23 @@
         <nb-icon icon="plus-outline"></nb-icon>
         Add Project
       </button>
-      <div *ngIf="toogleProject" class="project_name">
-        <input
-         type="text" 
-         nbInput placeholder="Project name"
-         [(ngModel)]="projectName"
-        >
-        <button nbButton (click)="createProject()">Create</button>
-      </div>
     </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div *ngIf="toogleProject" class="project_name">
+      <input
+       type="text" 
+       nbInput placeholder="Project name"
+       [(ngModel)]="projectName"
+      >
+      <button nbButton (click)="createProject()">Create</button>
+    </div>
+    <nb-list>
+      <nb-list-item *ngFor="let project of projects">
+        {{project.name}}
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+  <div>
   </div>
-</div>
+</nb-card>
