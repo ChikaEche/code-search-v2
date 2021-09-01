@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Firestore, doc, setDoc, updateDoc } from '@angular/fire/firestore';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, from, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { generateRandomString } from '../utils/generateRandomString';
+import { MeilisearchService } from './meilisearch.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,17 +11,20 @@ import { generateRandomString } from '../utils/generateRandomString';
 export class FileUploadService {
 
   fileReader = new FileReader();
+  uploadingFile$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private readonly firestore: Firestore
+    private readonly firestore: Firestore,
+    private readonly milisearchService: MeilisearchService
   ) {}
 
+
   fileUpload(file: File, projectId: string, fileName: string) {
-    console.log({projectId, fileName})
-    this.fileReader.onload = (e) => {
+    this.uploadingFile$.next(true)
+    this.fileReader.readAsText(file);
+    this.fileReader.onload = () => {
       this.saveFileText(projectId, fileName)
     }
-    this.fileReader.readAsText(file)
   }
 
   saveFileText(projectId: string, fileName: string) {
@@ -29,16 +33,33 @@ export class FileUploadService {
 
     const ref = doc(this.firestore, `projects/${projectId}`)
 
-    from(updateDoc(ref, 'files', {
-        [fileId]: {
-          name: fileName,
-          text: fileText
+    from(setDoc(ref, {
+        files: {
+          [fileId]: {
+            name: fileName,
+            text: fileText
+          }
         }
-      }
+      },
+      {merge: true}
     )).pipe(
-      map(() => console.log("uploaded"))
+      switchMap(() => {
+        return this.milisearchService.createFile({
+          id: fileId,
+          name: fileName,
+          text: fileText as string[]
+        }, fileId)
+      }),
+      tap(() => {
+        this.uploadingFile$.next(false)
+        console.log('uploaded file complete')
+      }),
+      catchError((err) => {
+        this.uploadingFile$.next(false)
+        console.error("An error occured while uploading file", {err})
+        return of(null)
+      })
     ).subscribe()
-
   }
 
   convertFileToText() {
