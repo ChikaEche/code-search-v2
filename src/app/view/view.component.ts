@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
+import { FileUploadService } from '../core/services/file-upload.service';
 import { ProjectService } from '../core/services/project.service';
 
 @Component({
@@ -8,12 +9,13 @@ import { ProjectService } from '../core/services/project.service';
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnInit {
+export class ViewComponent {
 
   currentProject: Project | null = null;
   projectCount = 0;
   constructor(
-    public readonly projectService: ProjectService
+    public readonly projectService: ProjectService,
+    private readonly fileUploadService: FileUploadService
   ) { 
     this.projectService.currentProject$.pipe(
       tap((currentProject) => {
@@ -24,7 +26,11 @@ export class ViewComponent implements OnInit {
     ).subscribe()
   }
 
-  ngOnInit(): void {
+  uploadFile(event: any) {
+    console.log(event)
+    this.fileUploadService.fileUpload(event.target.files[0])
   }
+
+  
 
 }

@@ -17,7 +17,7 @@ export class AuthService {
     public readonly auth: Auth,
     public readonly firestore: Firestore
   ) {
-
+ 
     this.user$ = authState(this.auth).pipe(
       switchMap((user) => {
         const docRef = doc(this.firestore, `users/${user?.uid}`)

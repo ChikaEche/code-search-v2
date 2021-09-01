@@ -7,7 +7,16 @@
       </span>
     </div>
     <div>
-      <button nbButton>
+      <input
+      style="display: none;"
+      #file
+      (change)="uploadFile($event)"
+      type="file"
+      >
+      <button 
+        nbButton
+        (click)="file.click()"
+      >
         <nb-icon icon="plus-outline"></nb-icon>
         Upload File
       </button>

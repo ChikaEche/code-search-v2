@@ -41,13 +41,14 @@ export class ProjectComponent implements OnInit {
   createProject() {
     this.loading = true;
     this.projectService.createProject(this.projectName).pipe(
-      map(() => {
+      tap((projectId) => {
         this.projects = [
           ...this.projects, 
           {
             name: this.projectName,
             userId: this.userId,
-            files: {}
+            files: {},
+            projectId
           }
         ];
         this.loading = false;
@@ -64,7 +65,9 @@ export class ProjectComponent implements OnInit {
   getProjects(userId: string) {
     this.projectService.getProjects(userId).pipe(
       tap((doc) => {
-        doc.forEach((project) => this.projects = [...this.projects, project.data() as Project])
+        doc.forEach((project) => {
+          this.projects = [...this.projects, {...project.data(), projectId: project.id} as Project]
+        })
       })
     ).subscribe()
   }

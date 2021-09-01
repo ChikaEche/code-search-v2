@@ -1,5 +1,6 @@
 export interface Project {
   name: string,
   userId: string,
-  files: Object
+  files: Object,
+  projectId?: string
 }
