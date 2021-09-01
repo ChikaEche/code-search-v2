@@ -29,4 +29,11 @@ export class MeilisearchService {
       this.meilisearch.index(index).updateDocuments([data])
     )
   }
+
+  search(text: string, index: string) {
+    console.log({text, index})
+    return from(
+      this.meilisearch.getIndex(index)
+    );
+  }
 }

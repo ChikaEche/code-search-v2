@@ -37,7 +37,7 @@ export class FileUploadService {
         files: {
           [fileId]: {
             name: fileName,
-            text: fileText
+            text: (fileText as string).split(/\r\n|\n/)
           }
         }
       },
@@ -47,7 +47,7 @@ export class FileUploadService {
         return this.milisearchService.createFile({
           id: fileId,
           name: fileName,
-          text: fileText as string[]
+          text: fileText as string
         }, fileId)
       }),
       tap(() => {
@@ -63,6 +63,6 @@ export class FileUploadService {
   }
 
   convertFileToText() {
-    return this.fileReader.result?.toString().split(/\r\n|\n/)
+    return this.fileReader.result?.toString()
   }
 }

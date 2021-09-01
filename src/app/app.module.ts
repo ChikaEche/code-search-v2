@@ -17,6 +17,7 @@ import { SharedModule } from './shared/shared.module';
 import { ProjectComponent } from './project/project.component';
 import { ViewComponent } from './view/view.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     DashboardComponent,
     ProjectComponent,
     ViewComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    SearchComponent
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
