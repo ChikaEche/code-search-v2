@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { Firestore, doc, setDoc, collection, getDocs, where, query } from '@angular/fire/firestore';
 import { MeilisearchService } from './meilisearch.service';
 import { switchMap } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import { UserService } from './user.service';
+import { Project } from '../interfaces/project';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
+
+  currentProject$: BehaviorSubject<Project | null> = new BehaviorSubject<Project | null>(null);
+
   get usersCollection() {
     return collection(this.firestore, 'users');
   }
@@ -38,6 +42,10 @@ export class ProjectService {
         })
       })
     )
+  }
+
+  getCurrentProject() {
+    return this.currentProject$.value;
   }
 
   getProjects(userId: string) {

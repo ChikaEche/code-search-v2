@@ -1,4 +1,4 @@
-<nb-card class="project__layout">
+<nb-card [nbSpinner]="loading" class="project__layout">
   <nb-card-header class="header">
     <div>
       <h5>Projects</h5>
@@ -13,14 +13,16 @@
   <nb-card-body>
     <div *ngIf="toogleProject" class="project_name">
       <input
-       type="text" 
-       nbInput placeholder="Project name"
-       [(ngModel)]="projectName"
+        #input
+        minlength="5"
+        type="text" 
+        nbInput placeholder="Project name"
+        [(ngModel)]="projectName"
       >
-      <button nbButton (click)="createProject()">Create</button>
+      <button [disabled]="projectName.length < 5" nbButton (click)="createProject()">Create</button>
     </div>
     <nb-list>
-      <nb-list-item *ngFor="let project of projects">
+      <nb-list-item *ngFor="let project of projects" (click)="selectProject(project)">
         {{project.name}}
       </nb-list-item>
     </nb-list>

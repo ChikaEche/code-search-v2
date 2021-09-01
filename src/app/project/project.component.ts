@@ -18,13 +18,12 @@ export class ProjectComponent implements OnInit {
   toogleProject = false;
   projects: Project[] = [];
   userId = '';
+  loading = false;
 
   constructor(
     private readonly projectService: ProjectService,
     private readonly authService: AuthService
-  ) { 
-    
-  }
+  ) {}
 
   ngOnInit() {
     this.authService.user$.pipe(
@@ -35,7 +34,12 @@ export class ProjectComponent implements OnInit {
     ).subscribe()
   }
 
+  selectProject(project: Project) {
+    this.projectService.currentProject$.next(project);
+  }
+
   createProject() {
+    this.loading = true;
     this.projectService.createProject(this.projectName).pipe(
       map(() => {
         this.projects = [
@@ -45,9 +49,12 @@ export class ProjectComponent implements OnInit {
             userId: this.userId,
             files: {}
           }
-        ]
+        ];
+        this.loading = false;
+        this.projectName = '';
       }),
       catchError((err) => {
+        this.loading = false;
         console.error('Error while creating project', {err})
         return of(null)
       })

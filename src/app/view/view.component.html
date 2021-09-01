@@ -1,1 +1,28 @@
-<p>view works!</p>
+<ng-template #project>
+  <div class="selected">
+    <div class="project__header">
+      <h5>{{currentProject?.name}}</h5>
+      <span>
+        files: {{projectCount}}
+      </span>
+    </div>
+    <div>
+      <button nbButton>
+        <nb-icon icon="plus-outline"></nb-icon>
+        Upload File
+      </button>
+    </div>
+    <div>
+  
+    </div>
+  </div>
+</ng-template>
+<ng-template #noProject>
+  <div class="not-selected">
+    <h3>No project has been selected</h3>
+  </div>
+</ng-template>
+
+<div class="project__container">
+  <ng-container *ngTemplateOutlet="currentProject ? project : noProject"></ng-container>
+</div>

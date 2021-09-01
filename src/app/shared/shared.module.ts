@@ -6,7 +6,8 @@ import {
   NbCardModule,
   NbIconModule,
   NbInputModule,
-  NbListModule
+  NbListModule,
+  NbSpinnerModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 
@@ -19,6 +20,7 @@ const imports = [
   NbIconModule,
   NbInputModule,
   NbListModule,
+  NbSpinnerModule,
   FormsModule
 ];
 const declarations: any[] = [];
