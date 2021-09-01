@@ -6,23 +6,9 @@
         files: {{projectCount}}
       </span>
     </div>
+    
     <div>
-      <input
-      style="display: none;"
-      #file
-      (change)="uploadFile($event)"
-      type="file"
-      >
-      <button 
-        nbButton
-        (click)="file.click()"
-      >
-        <nb-icon icon="plus-outline"></nb-icon>
-        Upload File
-      </button>
-    </div>
-    <div>
-  
+      <app-file-upload [currentProject]="currentProject"></app-file-upload>
     </div>
   </div>
 </ng-template>

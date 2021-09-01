@@ -26,11 +26,6 @@ export class ViewComponent {
     ).subscribe()
   }
 
-  uploadFile(event: any) {
-    console.log(event)
-    this.fileUploadService.fileUpload(event.target.files[0])
-  }
-
   
 
 }

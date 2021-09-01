@@ -1,6 +1,9 @@
 export interface Project {
   name: string,
   userId: string,
-  files: Object,
+  files?: {
+    name: string,
+    text: string[]
+  },
   projectId?: string
 }

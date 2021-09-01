@@ -47,7 +47,6 @@ export class ProjectComponent implements OnInit {
           {
             name: this.projectName,
             userId: this.userId,
-            files: {},
             projectId
           }
         ];
