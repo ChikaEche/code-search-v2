@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
+import { MilisearchFile } from '../core/interfaces/milisearch-file';
 import { Project } from '../core/interfaces/project';
 import { MeilisearchService } from '../core/services/meilisearch.service';
 
@@ -12,16 +13,20 @@ export class SearchComponent {
 
   @Input() currentProject: Project | null = null
   searchKeyWord = '';
+  searchedValues: string[][] = [];
   constructor(
     private readonly milisearchService: MeilisearchService
   ) { }
 
   search() {
-    console.log(this.searchKeyWord, this.currentProject?.projectId as string)
+    this.searchedValues = [];
     this.milisearchService.search(this.searchKeyWord, this.currentProject?.projectId as string).pipe(
-      tap((value) => {
-        console.log({value})
-        //value.hits.map((data) => console.log({data}))
+      tap(({ hits }) => {
+        hits.map((result: MilisearchFile) => {
+          result.textArray = result.text.split(/\r\n|\n/)
+          this.searchedValues = [...this.searchedValues, result.textArray];
+          console.log(this.searchedValues)
+        })
       })
     ).subscribe()
   }
