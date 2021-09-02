@@ -44,13 +44,15 @@ export class FileUploadService {
       {merge: true}
     )).pipe(
       switchMap(() => {
+        console.log({fileText, fileId, fileName})
         return this.milisearchService.createFile({
           id: fileId,
           name: fileName,
           text: fileText as string
-        }, fileId)
+        }, projectId)
       }),
-      tap(() => {
+      tap(({updateId }) => {
+        console.log({updateId})
         this.uploadingFile$.next(false)
         console.log('uploaded file complete')
       }),

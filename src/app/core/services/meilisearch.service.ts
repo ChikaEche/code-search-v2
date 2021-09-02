@@ -25,15 +25,16 @@ export class MeilisearchService {
   }
 
   createFile(data: MilisearchFile, index: string) {
+    console.log(data)
     return from(
-      this.meilisearch.index(index).updateDocuments([data])
+      this.meilisearch.index(index).addDocuments([data])
     )
   }
 
   search(text: string, index: string) {
     console.log({text, index})
     return from(
-      this.meilisearch.getIndex(index)
+      this.meilisearch.index(index).search(text)
     );
   }
 }
