@@ -29,8 +29,7 @@ export class SearchComponent {
           this.searchedValues = [
             ...this.searchedValues,
             result
-          ]; //this.searchedValues = [...this.searchedValues, result.textArray];
-          console.log(this.searchedValues)
+          ];
         })
       })
     ).subscribe()
