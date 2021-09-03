@@ -3,6 +3,7 @@ import { tap } from 'rxjs/operators';
 import { MilisearchFile } from '../core/interfaces/milisearch-file';
 import { Project } from '../core/interfaces/project';
 import { MeilisearchService } from '../core/services/meilisearch.service';
+import { getSearchedValues } from '../core/utils/getSearchedValues';
 
 @Component({
   selector: 'app-search',
@@ -13,7 +14,7 @@ export class SearchComponent {
 
   @Input() currentProject: Project | null = null
   searchKeyWord = '';
-  searchedValues: string[][] = [];
+  searchedValues: MilisearchFile[] = [];
   constructor(
     private readonly milisearchService: MeilisearchService
   ) { }
@@ -23,8 +24,12 @@ export class SearchComponent {
     this.milisearchService.search(this.searchKeyWord, this.currentProject?.projectId as string).pipe(
       tap(({ hits }) => {
         hits.map((result: MilisearchFile) => {
-          result.textArray = result.text.split(/\r\n|\n/)
-          this.searchedValues = [...this.searchedValues, result.textArray];
+          const textArray = result.text.split(/\r\n|\n/);
+          result.textArray = getSearchedValues(textArray, this.searchKeyWord);
+          this.searchedValues = [
+            ...this.searchedValues,
+            result
+          ]; //this.searchedValues = [...this.searchedValues, result.textArray];
           console.log(this.searchedValues)
         })
       })

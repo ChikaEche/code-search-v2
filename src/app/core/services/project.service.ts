@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, doc, setDoc, collection, getDocs, where, query, documentId } from '@angular/fire/firestore';
 import { MeilisearchService } from './meilisearch.service';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, from, of } from 'rxjs';
 import { UserService } from './user.service';
 import { Project } from '../interfaces/project';
@@ -35,12 +35,13 @@ export class ProjectService {
   createProject(name: string) {
     return this.meilisearchService.createIndex().pipe(
       switchMap(({ uid }) => {
-        this.createProjectDocument(uid, {
+        return this.createProjectDocument(uid, {
           name,
           files: {},
           userId: this.userService.getCurrentUser()?.userId,
-        })
-        return of(uid)
+        }).pipe(
+          map(() => uid)
+        )
       })
     )
   }

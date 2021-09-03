@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
 import { FileUploadService } from '../core/services/file-upload.service';
 
@@ -22,10 +23,21 @@ export class FileUploadComponent {
   }
 
   uploadFile(event: any) {
+    this.uploadingFile = true;
     this.fileUploadService.fileUpload(
       event.target.files[0], this.currentProject?.projectId as string,
       event.target.files[0].name
-    )
+    ).pipe(
+      tap((u) => {
+        console.log(u?.updateId)
+        this.uploadingFile = false
+      }),
+      catchError((err) => {
+        this.uploadingFile = false;
+        console.error("Error uploading file", {err});
+        return of(null)
+      })
+    ).subscribe()
   }
 
 }

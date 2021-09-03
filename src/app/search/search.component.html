@@ -3,13 +3,20 @@
     <input [(ngModel)]="searchKeyWord" type="text" nbInput fullWidth placeholder="search">
     <button (click)="search()" nbButton>Search</button>
   </div>
-  <nb-card>
-    <nb-card-body>
-      <nb-list *ngFor="let value of searchedValues">
-        <nb-list-item *ngFor="let text of value">
-          {{text}}
-        </nb-list-item>
-      </nb-list>
-    </nb-card-body>
-  </nb-card>
+  <div>
+    <div *ngFor="let project of searchedValues">
+      <div>
+        <nb-card *ngFor="let codeline of project.textArray">
+          <nb-card-header>{{project.name}}</nb-card-header>
+          <nb-card-body>
+            <nb-list>
+              <nb-list-item *ngFor="let text of codeline">
+                {{text}}
+              </nb-list-item>
+            </nb-list>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </div>
 </div>
