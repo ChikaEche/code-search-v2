@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Firestore, doc, setDoc, updateDoc } from '@angular/fire/firestore';
-import { BehaviorSubject, from, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, from, Observable, of } from 'rxjs';
+import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { generateRandomString } from '../utils/generateRandomString';
 import { MeilisearchService } from './meilisearch.service';
+
+type LoadFileJob = {
+  [key:string]: Observable<unknown>
+}
+
+interface FileWithRelativePath extends File {
+  webkitRelativePath:  string
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileUploadService {
 
-  fileReader = new FileReader();
+  //fileReader = new FileReader();
   uploadingFile$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -18,60 +26,73 @@ export class FileUploadService {
     private readonly milisearchService: MeilisearchService
   ) {}
 
+  // iterateFiles(file: File[]) {
+  //   of(...file).pipe(
+  //     map((file: File) => {
+  //       return this.fileUpload(file, '', '')
+  //     })
+  //   ).subscribe()
+  // }
 
-  fileUpload(file: File, projectId: string, fileName: string) {
-    return this.loadFile(file).pipe(
-      map((text) => text as string),
-      switchMap((text) => this.saveFileText(projectId, fileName, text)),
-      catchError((err) => {
-        console.error("An error occured while uploading file", {err})
-        return of(null)
-      })
-    )
+
+  fileUpload(files: File[], projectId: string) {
+    console.log(files)
+
+    const jobs = files.reduce((previousValue, currentValue) => {
+      const filePath  = (currentValue as FileWithRelativePath).webkitRelativePath
+      previousValue[filePath] = this.loadFile(currentValue)
+      return previousValue
+    }, {} as LoadFileJob)
+
+    return forkJoin(jobs)
+      .pipe(
+        switchMap((fileMap) => {
+          return this.saveFileMap(projectId, fileMap)
+        })
+      )
+
+    // return of(...files).pipe(
+    //   concatMap((file: File) => {
+    //     return this.loadFile(file)
+    //   }),
+    //   concatMap((text) => {
+    //     return this.saveFileText(projectId, text, )
+    //   })
+    // ).subscribe()
+
   }
 
   loadFile(file: File) {
-    this.fileReader.readAsText(file);
+    const fileReader = new FileReader()
+    fileReader.readAsText(file);
     return from(new Promise((resolve, reject) => {
-      this.fileReader.onerror = function(){
+      fileReader.onerror = function(){
         reject(new Error("Could not load file"))
       }
 
-      this.fileReader.onload = function() {
-        //this.saveFileText(projectId, fileName)
+      fileReader.onload = function() {
         resolve(this.result as string)
       }
     }))
   }
 
-  saveFileText(projectId: string, fileName: string, text: string) {
-    const fileText = this.convertFileToText();
-    const fileId = `${generateRandomString()}${Date.now()}`;
-
+  saveFileMap(projectId: string, files: {[path: string]: string}) {
     const ref = doc(this.firestore, `projects/${projectId}`)
-
     return from(setDoc(ref, {
-        files: {
-          [fileId]: {
-            text,
-            name: fileName
-          }
-        }
+        files
       },
       {merge: true}
     )).pipe(
       switchMap(() => {
-        console.log({fileText, fileId, fileName})
-        return this.milisearchService.createFile({
-          text,
-          id: fileId,
-          name: fileName,
-        }, projectId)
+        return this.milisearchService.createFiles(Object.keys(files).map((key) => ({
+          id: key,
+          text: files[key]
+        })), projectId)
       })
     )
   }
 
   convertFileToText() {
-    return this.fileReader.result?.toString()
+    return 'this.fileReader.result?.toString()'
   }
 }

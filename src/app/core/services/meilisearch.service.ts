@@ -24,10 +24,9 @@ export class MeilisearchService {
     );
   }
 
-  createFile(data: MilisearchFile, index: string) {
-    console.log(data)
+  createFiles(data: MilisearchFile[], index: string) {
     return from(
-      this.meilisearch.index(index).addDocuments([data])
+      this.meilisearch.index(index).addDocuments(data)
     )
   }
 

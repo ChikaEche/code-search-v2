@@ -17,32 +17,18 @@ export class FileUploadComponent {
 
   constructor(
     private readonly fileUploadService: FileUploadService
-  ) { 
-    this.fileUploadService.uploadingFile$.pipe(
-      tap((uploading) => this.uploadingFile = uploading)
-    ).subscribe()
-  }
+  ) {}
 
   uploadFile(event: any) {
-    console.log({event})
-    console.log(
-      this.filterFiles(event.target.files)
-    )
     //this.uploadingFile = true;
-    // this.fileUploadService.fileUpload(
-    //   event.target.files[0], this.currentProject?.projectId as string,
-    //   event.target.files[0].name
-    // ).pipe(
-    //   tap((u) => {
-    //     console.log(u?.updateId)
-    //     this.uploadingFile = false
-    //   }),
-    //   catchError((err) => {
-    //     this.uploadingFile = false;
-    //     console.error("Error uploading file", {err});
-    //     return of(null)
-    //   })
-    // ).subscribe()
+    const files = this.filterFiles(event.target.files) as File[]
+
+    this.fileUploadService.fileUpload(files, this.currentProject?.projectId as string).pipe(
+      catchError((err) => {
+        console.error("Canno")
+        return of(null)
+      })
+    ).subscribe()
   }
 
   filterFiles(files: FileList) {
