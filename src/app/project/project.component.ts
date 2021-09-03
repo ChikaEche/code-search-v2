@@ -62,6 +62,7 @@ export class ProjectComponent implements OnInit {
   }
 
   getProjects(userId: string) {
+    this.projects = [];
     this.projectService.getProjects(userId).pipe(
       tap((doc) => {
         doc.forEach((project) => {
