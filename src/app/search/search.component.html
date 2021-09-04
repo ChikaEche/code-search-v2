@@ -6,12 +6,17 @@
   <div [nbSpinner]="searching" class="search_list">
     <div *ngFor="let project of searchedValues">
       <div>
-        <nb-card *ngFor="let codeline of project.textArray">
+        <nb-card *ngFor="let codeline of project.values">
           <nb-card-header>{{project.name}}</nb-card-header>
           <nb-card-body>
             <nb-list>
               <nb-list-item *ngFor="let text of codeline">
-                {{text}}
+                <span class="line_number">
+                  {{text.lineNumber}}.
+                </span>
+                <span class="text">
+                  {{text.text}}
+                </span>
               </nb-list-item>
             </nb-list>
           </nb-card-body>

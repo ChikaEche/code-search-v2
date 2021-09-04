@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { catchError, tap, finalize } from 'rxjs/operators';
 import { MilisearchFile } from '../core/interfaces/milisearch-file';
 import { Project } from '../core/interfaces/project';
+import { SearchedValuesUI } from '../core/interfaces/searched-values';
 import { MeilisearchService } from '../core/services/meilisearch.service';
 import { getSearchedValues } from '../core/utils/getSearchedValues';
 
@@ -14,8 +15,9 @@ import { getSearchedValues } from '../core/utils/getSearchedValues';
 export class SearchComponent {
 
   @Input() currentProject: Project | null = null
+  
   searchKeyWord = '';
-  searchedValues: MilisearchFile[] = [];
+  searchedValues: SearchedValuesUI[] = [];
   searching = false;
   constructor(
     private readonly milisearchService: MeilisearchService
@@ -27,19 +29,29 @@ export class SearchComponent {
     this.milisearchService.search(this.searchKeyWord, this.currentProject?.projectId as string).pipe(
       tap(({hits}) => {
         hits.map((result: MilisearchFile) => {
-          const textArray = result.text.split(/\r\n|\n/);
-          result.textArray = getSearchedValues(textArray, this.searchKeyWord);
+          const textArray = getSearchedValues(result.text.split(/\r\n|\n/), this.searchKeyWord)
+          // this.searchedValues = [
+          //   ...this.searchedValues,
+          //   result
+          // ];
           this.searchedValues = [
             ...this.searchedValues,
-            result
-          ];
+            {
+              ...textArray,
+              ...result
+            }
+          ]
+          console.log(this.searchedValues)
         })
       }),
       catchError((err) => {
         console.error("Cannot searched values", {err})
         return of(err)
       }),
-      finalize(() => this.searching = false)
+      finalize(() => {
+        this.searchKeyWord = '';
+        this.searching = false;
+      })
     ).subscribe()
   }
 

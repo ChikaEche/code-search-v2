@@ -1,18 +1,29 @@
+import { SearchedValues } from "../interfaces/searched-values";
+
 export const getSearchedValues = (value: string[], searchString: string) => {
-  const searchedValues: string[][] = [];
+  const searchedValues: SearchedValues = {values: []};
 
   value.forEach((eachString, index) => {
     if(eachString.includes(searchString)) {
-      searchedValues.push([]);
-      const lastIdx = searchedValues.length - 1; 
+      searchedValues.values.push([]);
+      const lastIdx = searchedValues.values.length - 1; 
       if(index !== 0) {
-        searchedValues[lastIdx].push(value[index - 1])
+        searchedValues.values[lastIdx].push({
+          text: value[index - 1],
+          lineNumber: index - 1
+        })
       }
 
-      searchedValues[lastIdx].push(value[index])
+      searchedValues.values[lastIdx].push({
+        text: value[index],
+        lineNumber: index
+      })
 
       if(index !== value.length - 1) {
-        searchedValues[lastIdx].push(value[index + 1])
+        searchedValues.values[lastIdx].push({
+          text: value[index + 1],
+          lineNumber: index + 1
+        })
       }
     }
   })
