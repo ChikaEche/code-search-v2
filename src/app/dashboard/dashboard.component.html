@@ -1,13 +1,9 @@
 <nb-layout>
   <nb-layout-column>
     <div class="dashboard__container">
-      <div 
-      [ngStyle]="(breakPointService.isLargeScreen$ | async) ? {'width': '35%'} : {'width': '0%'}"
-      class="projects">
-        <ng-container 
-          *ngTemplateOutlet="(breakPointService.isLargeScreen$ | async) ? largeScreen : smallScreen">
-        </ng-container>
-      </div>
+      <ng-container 
+        *ngTemplateOutlet="(breakPointService.isLargeScreen$ | async) ? largeScreen : smallScreen">
+      </ng-container>
       <div
         [ngStyle]="(breakPointService.isLargeScreen$ | async) ? {'width': '60%'} : {'width': '100%'}"
         class="view">
@@ -31,5 +27,9 @@
 </ng-template>
 
 <ng-template #largeScreen>
-  <app-project></app-project>
+  <div
+    [ngStyle]="(breakPointService.isLargeScreen$ | async) ? {'width': '35%'} : {'width': '0%'}"  
+  >
+    <app-project></app-project>
+  </div>
 </ng-template>

@@ -16,3 +16,12 @@ $nb-themes: nb-register-theme((
   // color-primary-900: #091c7a,
 
 ), dark, dark);
+
+$nb-themes: nb-register-theme(
+  (
+     sidebar-width: inherit,
+     sidebar-width-compact: 3.5rem
+  ),
+  dark,
+  dark
+);

@@ -1,13 +1,26 @@
+
 .icon {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 30px;
 }
 
 .dashboard__container {
+  min-height: 100%;
   display: flex;
 }
 
-
 .view {
+  min-height: 100%;
   margin-left: 10px;
+}
+
+nb-sidebar.expanded {
+  width: 50% !important;
+}
+
+@media screen and (max-width: 750px) {
+  nb-sidebar.expanded {
+    width: 80% !important;
+  }
 }

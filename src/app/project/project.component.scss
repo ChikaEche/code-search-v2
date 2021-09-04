@@ -25,3 +25,9 @@ nb-list-item:hover {
   display: flex;
   justify-content: center;
 }
+
+@media screen and (max-width: 500px) {
+  .project_button {
+    display: none;
+  }
+}
