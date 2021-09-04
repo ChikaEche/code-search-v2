@@ -1,14 +1,16 @@
 <ng-template #project>
   <div class="selected">
-    <div class="project__header">
-      <h5>{{currentProject?.name}}</h5>
-      <span>
-        files: {{projectCount}}
-      </span>
-    </div>
-    
     <div>
-      <app-file-upload [currentProject]="currentProject"></app-file-upload>
+      <div class="project__header">
+        <h5>{{currentProject?.name}}</h5>
+        <span>
+          total files: {{projectCount}}
+        </span>
+      </div>
+      
+      <div>
+        <app-file-upload [currentProject]="currentProject"></app-file-upload>
+      </div>
     </div>
     <div>
       <app-search [currentProject]="currentProject"></app-search>

@@ -1,9 +1,9 @@
 <div>
-  <div>
-    <input [(ngModel)]="searchKeyWord" type="text" nbInput fullWidth placeholder="search">
+  <div class="search_bar">
+    <input [(ngModel)]="searchKeyWord" type="text" nbInput fullWidth placeholder="type code text e.g import">
     <button (click)="search()" nbButton>Search</button>
   </div>
-  <div>
+  <div [nbSpinner]="searching" class="search_list">
     <div *ngFor="let project of searchedValues">
       <div>
         <nb-card *ngFor="let codeline of project.textArray">
@@ -18,5 +18,8 @@
         </nb-card>
       </div>
     </div>
+  </div>
+  <div *ngIf="!searching && !searchedValues.length" class="null_list">
+    <h5>No Search result found yet 🤷‍♂️</h5>
   </div>
 </div>

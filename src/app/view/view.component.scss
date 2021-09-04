@@ -5,18 +5,28 @@
 .not-selected {
   height: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
 .project__header {
-  justify-content: space-between;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+.project__header h5 {
+  margin: 5px;
 }
 
 .selected {
   display: flex;
   flex-direction: column;
+}
+
+.selected div:first-child {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .project__header span {

@@ -1,0 +1,17 @@
+.search_bar {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.search_bar button {
+  margin-left: 10px;
+}
+
+.search_list {
+  min-height: 10vh;
+}
+
+.null_list {
+  display: flex;
+  justify-content: center;
+}
