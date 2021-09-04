@@ -1,7 +1,15 @@
 <div>
   <div class="search_bar">
-    <input [(ngModel)]="searchKeyWord" type="text" nbInput fullWidth placeholder="type code text e.g import">
-    <button (click)="search()" nbButton>Search</button>
+    <input
+      #input 
+      [(ngModel)]="searchKeyWord"
+      type="text" 
+      nbInput 
+      fullWidth
+      minlength="3" 
+      placeholder="type code text e.g import"
+    >
+    <button [disabled]="searchKeyWord.length < 3" (click)="search()" nbButton>Search</button>
   </div>
   <div [nbSpinner]="searching" class="search_list">
     <div *ngFor="let project of searchedValues">
@@ -12,7 +20,7 @@
             <nb-list>
               <nb-list-item *ngFor="let text of codeline">
                 <span class="line_number">
-                  {{text.lineNumber}}.
+                  {{text.lineNumber + 1}}.
                 </span>
                 <span class="text">
                   {{text.text}}
