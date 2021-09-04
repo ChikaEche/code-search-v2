@@ -1,5 +1,5 @@
-<nb-layout>
-  <nb-layout-column>
+<div>
+  <div>
     <div class="dashboard__container">
       <ng-container 
         *ngTemplateOutlet="(breakPointService.isLargeScreen$ | async) ? largeScreen : smallScreen">
@@ -17,8 +17,8 @@
         </div>
       </div>
     </div>
-  </nb-layout-column>
-</nb-layout>
+  </div>
+</div>
 
 <ng-template #smallScreen>
   <nb-sidebar state="collapsed" fixed>
