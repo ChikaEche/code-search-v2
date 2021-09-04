@@ -22,8 +22,8 @@ export class FileUploadComponent {
 
   uploadFile(event: any) {
     this.uploadingFile = true;
-    const files = filterFiles(event.target.files) as File[]
-    console.log({files})
+    const files = filterFiles(event.target.files) as File[];
+    'l'
 
     this.fileUploadService.fileUpload(files, this.currentProject?.projectId as string).pipe(
       map(({updateId}) => console.log({updateId})),
@@ -33,20 +33,6 @@ export class FileUploadComponent {
       }),
       finalize(() => this.uploadingFile = false)
     ).subscribe()
-  }
-
-  filterFiles(files: FileList) {
-    const filteredFiles: (File | null)[] = [];
-    for(let i = 0; i < files.length; i++) {
-      if(files.item(i)) {
-        const file = files.item(i)?.name.split('.');
-        const fileExtension = file ? file[file.length - 1] : '';
-        if(fileTypes[fileExtension]) {
-          filteredFiles.push(files.item(i))
-        }
-      }
-    }
-    return filteredFiles;
   }
 
 }

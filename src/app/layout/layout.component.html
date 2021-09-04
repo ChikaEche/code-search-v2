@@ -1,14 +1,16 @@
 <nb-layout>
   <nb-layout-header fixed>
-    <div>
-      <h3>Code-search</h3>
-    </div>
-    <div>
-      <button
-        *ngIf="(authService.user$ | async)"
-        nbButton
-        (click)="logOut()"
-      >Logout</button>
+    <div class="header">
+      <div>
+        <h3>Code-search</h3>
+      </div>
+      <div>
+        <button
+          *ngIf="(authService.user$ | async)"
+          nbButton
+          (click)="logOut()"
+        >Logout</button>
+      </div>
     </div>
   </nb-layout-header>
   <nb-layout-column class="colored-column-basic">
