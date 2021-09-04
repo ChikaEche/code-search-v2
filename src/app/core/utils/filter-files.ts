@@ -12,7 +12,6 @@ export const filterFiles = (files: FileList) => {
         !(files.item(i) as FileWithRelativePath).webkitRelativePath.includes('node_modules') &&
         !(files.item(i) as FileWithRelativePath).webkitRelativePath.includes('dist') &&
         !(files.item(i) as FileWithRelativePath).webkitRelativePath.includes('build')
-
       ) {
         filteredFiles.push(files.item(i))
       }
