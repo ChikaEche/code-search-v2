@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, doc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, forkJoin, from, Observable, of } from 'rxjs';
 import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { convertToCharCode } from '../utils/convert-to-charccode';
 import { generateRandomString } from '../utils/generateRandomString';
 import { MeilisearchService } from './meilisearch.service';
 
@@ -36,10 +37,9 @@ export class FileUploadService {
 
 
   fileUpload(files: File[], projectId: string) {
-    console.log(files)
 
     const jobs = files.reduce((previousValue, currentValue) => {
-      const filePath  = (currentValue as FileWithRelativePath).webkitRelativePath
+      const filePath  = (currentValue as FileWithRelativePath).webkitRelativePath;
       previousValue[filePath] = this.loadFile(currentValue)
       return previousValue
     }, {} as LoadFileJob)
@@ -50,15 +50,6 @@ export class FileUploadService {
           return this.saveFileMap(projectId, fileMap)
         })
       )
-
-    // return of(...files).pipe(
-    //   concatMap((file: File) => {
-    //     return this.loadFile(file)
-    //   }),
-    //   concatMap((text) => {
-    //     return this.saveFileText(projectId, text, )
-    //   })
-    // ).subscribe()
 
   }
 
@@ -84,15 +75,13 @@ export class FileUploadService {
       {merge: true}
     )).pipe(
       switchMap(() => {
-        return this.milisearchService.createFiles(Object.keys(files).map((key) => ({
-          id: key,
+        return this.milisearchService.createFiles(
+          Object.keys(files).map((key) => ({
+          id: convertToCharCode(key),
+          name: key,
           text: files[key]
-        })), projectId)
+        })  ), projectId)
       })
     )
-  }
-
-  convertFileToText() {
-    return 'this.fileReader.result?.toString()'
   }
 }

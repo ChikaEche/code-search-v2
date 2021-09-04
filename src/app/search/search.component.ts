@@ -22,7 +22,7 @@ export class SearchComponent {
   search() {
     this.searchedValues = [];
     this.milisearchService.search(this.searchKeyWord, this.currentProject?.projectId as string).pipe(
-      tap(({ hits }) => {
+      tap(({hits}) => {
         hits.map((result: MilisearchFile) => {
           const textArray = result.text.split(/\r\n|\n/);
           result.textArray = getSearchedValues(textArray, this.searchKeyWord);

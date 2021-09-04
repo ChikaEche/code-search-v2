@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
 import { FileUploadService } from '../core/services/file-upload.service';
 import { fileTypes } from '../core/utils/fileTypes';
@@ -24,8 +24,9 @@ export class FileUploadComponent {
     const files = this.filterFiles(event.target.files) as File[]
 
     this.fileUploadService.fileUpload(files, this.currentProject?.projectId as string).pipe(
+      map(({updateId}) => console.log({updateId})),
       catchError((err) => {
-        console.error("Canno")
+        console.error("Canno", {err})
         return of(null)
       })
     ).subscribe()

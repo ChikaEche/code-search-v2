@@ -1,5 +1,6 @@
 export interface MilisearchFile {
   text: string,
-  textArray?: string[][]
+  textArray?: string[][],
+  name: string
   id: string
 }

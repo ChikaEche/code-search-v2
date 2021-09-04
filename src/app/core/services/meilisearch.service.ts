@@ -20,13 +20,16 @@ export class MeilisearchService {
 
   createIndex() {
     return from(
-      this.meilisearch.createIndex(`${generateRandomString()}${Date.now()}`)
+      this.meilisearch.createIndex(`${generateRandomString()}${Date.now()}`, {
+        primaryKey: 'id'
+      })
     );
   }
 
   createFiles(data: MilisearchFile[], index: string) {
+    console.log({data, index})
     return from(
-      this.meilisearch.index(index).addDocuments(data)
+      this.meilisearch.index(index).addDocuments(data, {primaryKey: 'id'})
     )
   }
 

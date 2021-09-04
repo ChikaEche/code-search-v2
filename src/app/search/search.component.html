@@ -7,7 +7,7 @@
     <div *ngFor="let project of searchedValues">
       <div>
         <nb-card *ngFor="let codeline of project.textArray">
-          <nb-card-header>{{project.id}}</nb-card-header>
+          <nb-card-header>{{project.name}}</nb-card-header>
           <nb-card-body>
             <nb-list>
               <nb-list-item *ngFor="let text of codeline">
