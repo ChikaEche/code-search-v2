@@ -8,7 +8,8 @@ import {
   NbInputModule,
   NbListModule,
   NbSpinnerModule,
-  NbSearchModule
+  NbSearchModule,
+  NbSidebarModule
 } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
 
@@ -23,6 +24,7 @@ const imports = [
   NbListModule,
   NbSpinnerModule,
   NbSearchModule,
+  NbSidebarModule,
   FormsModule
 ];
 const declarations: any[] = [];

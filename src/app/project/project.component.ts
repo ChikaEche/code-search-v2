@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'firebase/auth';
 import { of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
 import { AuthService } from '../core/services/auth.service';
 import { ProjectService } from '../core/services/project.service';
-import { UserService } from '../core/services/user.service';
 
 @Component({
   selector: 'app-project',

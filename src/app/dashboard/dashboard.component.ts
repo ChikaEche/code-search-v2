@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { NbSidebarService } from '@nebular/theme';
+import { BreakPointService } from '../core/services/break-point.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
-  constructor() { }
+  constructor(
+    public readonly breakPointService: BreakPointService,
+    private sidebarService: NbSidebarService
+  ) { }
 
-  ngOnInit(): void {
+  toogle() {
+    this.sidebarService.toggle();
   }
 
 }

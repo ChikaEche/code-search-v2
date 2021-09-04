@@ -1,8 +1,35 @@
 <nb-layout>
-  <nb-layout-column class="project">
-    <app-project></app-project>
-  </nb-layout-column>
-  <nb-layout-column class="view">
-    <app-view></app-view>
+  <nb-layout-column>
+    <div class="dashboard__container">
+      <div 
+      [ngStyle]="(breakPointService.isLargeScreen$ | async) ? {'width': '35%'} : {'width': '0%'}"
+      class="projects">
+        <ng-container 
+          *ngTemplateOutlet="(breakPointService.isLargeScreen$ | async) ? largeScreen : smallScreen">
+        </ng-container>
+      </div>
+      <div
+        [ngStyle]="(breakPointService.isLargeScreen$ | async) ? {'width': '60%'} : {'width': '100%'}"
+        class="view">
+        <div class="icon" *ngIf="(breakPointService.isSmallScreen$ | async)">
+          <button nbButton (click)="toogle()">
+            <nb-icon icon="menu-outline"></nb-icon>
+          </button>
+        </div>
+        <div>
+          <app-view></app-view>
+        </div>
+      </div>
+    </div>
   </nb-layout-column>
 </nb-layout>
+
+<ng-template #smallScreen>
+  <nb-sidebar state="collapsed" fixed>
+    <app-project></app-project>
+  </nb-sidebar>
+</ng-template>
+
+<ng-template #largeScreen>
+  <app-project></app-project>
+</ng-template>

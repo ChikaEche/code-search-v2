@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule } from '@nebular/theme';
+import { NbSidebarService, NbThemeModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { AppRoutingModule } from './app-routing.module';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -41,7 +41,7 @@ import { SearchComponent } from './search/search.component';
     AppRoutingModule,
     SharedModule,
   ],
-  providers: [],
+  providers: [NbSidebarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
