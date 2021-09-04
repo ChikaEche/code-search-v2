@@ -4,6 +4,7 @@ import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
 import { FileUploadService } from '../core/services/file-upload.service';
 import { fileTypes } from '../core/utils/fileTypes';
+import { filterFiles } from '../core/utils/filter-files';
 
 @Component({
   selector: 'app-file-upload',
@@ -21,7 +22,8 @@ export class FileUploadComponent {
 
   uploadFile(event: any) {
     this.uploadingFile = true;
-    const files = this.filterFiles(event.target.files) as File[]
+    const files = filterFiles(event.target.files) as File[]
+    console.log({files})
 
     this.fileUploadService.fileUpload(files, this.currentProject?.projectId as string).pipe(
       map(({updateId}) => console.log({updateId})),

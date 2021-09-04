@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Firestore, doc, setDoc, updateDoc } from '@angular/fire/firestore';
-import { BehaviorSubject, forkJoin, from, Observable, of } from 'rxjs';
-import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { BehaviorSubject, forkJoin, from, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { FileWithRelativePath } from '../interfaces/file-with-relative-path';
 import { convertToCharCode } from '../utils/convert-to-charccode';
-import { generateRandomString } from '../utils/generateRandomString';
 import { MeilisearchService } from './meilisearch.service';
 
 type LoadFileJob = {
   [key:string]: Observable<unknown>
-}
-
-interface FileWithRelativePath extends File {
-  webkitRelativePath:  string
 }
 
 @Injectable({
@@ -19,22 +15,12 @@ interface FileWithRelativePath extends File {
 })
 export class FileUploadService {
 
-  //fileReader = new FileReader();
   uploadingFile$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly firestore: Firestore,
     private readonly milisearchService: MeilisearchService
   ) {}
-
-  // iterateFiles(file: File[]) {
-  //   of(...file).pipe(
-  //     map((file: File) => {
-  //       return this.fileUpload(file, '', '')
-  //     })
-  //   ).subscribe()
-  // }
-
 
   fileUpload(files: File[], projectId: string) {
 

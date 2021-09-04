@@ -30,10 +30,6 @@ export class SearchComponent {
       tap(({hits}) => {
         hits.map((result: MilisearchFile) => {
           const textArray = getSearchedValues(result.text.split(/\r\n|\n/), this.searchKeyWord)
-          // this.searchedValues = [
-          //   ...this.searchedValues,
-          //   result
-          // ];
           this.searchedValues = [
             ...this.searchedValues,
             {
