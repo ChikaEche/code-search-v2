@@ -12,3 +12,16 @@
 .project_name button {
   margin-left: 5px;
 }
+
+nb-list-item {
+  cursor: pointer;
+}
+
+nb-list-item:hover {
+  background-color: #4e70d4;
+}
+
+.null_project {
+  display: flex;
+  justify-content: center;
+}
