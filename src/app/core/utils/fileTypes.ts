@@ -4,5 +4,7 @@ export const fileTypes: {[x: string]: boolean} = {
   'js': true,
   'java': true,
   'json': true,
-  'html': true
+  'html': true,
+  'go': true,
+  'py': true
 }

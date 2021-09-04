@@ -3,7 +3,6 @@ import { MeiliSearch } from 'meilisearch';
 import { environment } from 'src/environments/environment';
 import { from } from 'rxjs';
 import { generateRandomString } from '../utils/generateRandomString';
-import { Project } from '../interfaces/project';
 import { MilisearchFile } from '../interfaces/milisearch-file';
 
 @Injectable({
