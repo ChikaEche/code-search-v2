@@ -16,7 +16,7 @@ Warning - Avoid uploading node_modules folder to avoid slowing down your machine
 
 - User searches under a project/codebase => The user searches for a particular word in the codebase. Using Meilisearch to search for the keyword and displays all occurrencies of the keyword to the user
 
-# current accepatble file
+# current acceptable files
 'ts', 'md', 'js', 'java', 'json', 'html', 'go', 'py'
 
 # upcoming features
