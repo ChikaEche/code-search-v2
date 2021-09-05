@@ -32,16 +32,11 @@ export class AuthService {
   loginWithGithub() {
     return from(signInWithPopup(this.auth, new firebase.GithubAuthProvider)).pipe(
       switchMap(({ user }) => {
-        console.log({user})
         return this.refreshUserData({
           userId: user?.uid as string,
           email: user?.email as string,
           displayName: user?.displayName as string
         });
-      }),
-      catchError((err) => {
-        console.error("Cannot sign in")
-        return of(null)
       })
     )
   }

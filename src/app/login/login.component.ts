@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { AuthService } from '../core/services/auth.service';
 
 @Component({
@@ -20,7 +21,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authService.loginWithGithub().pipe(
-      tap(() => this.router.navigate(['']))
+      tap(() => this.router.navigate([''])),
+      catchError((err) => {
+        console.error("Cannot sign in", {err})
+        return of(null)
+      })
     ).subscribe()
   }
 
