@@ -22,7 +22,7 @@
 
 <ng-template #smallScreen>
   <nb-sidebar state="collapsed" fixed>
-    <app-project></app-project>
+    <app-project (onProjectChange)="toogle()"></app-project>
   </nb-sidebar>
 </ng-template>
 

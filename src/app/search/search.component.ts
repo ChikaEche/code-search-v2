@@ -44,8 +44,7 @@ export class SearchComponent {
               ...textArray,
               ...result
             }
-          ]
-          console.log(this.searchedValues)
+          ];
         })
       }),
       catchError((err) => {

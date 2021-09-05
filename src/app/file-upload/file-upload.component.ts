@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { of } from 'rxjs';
-import { catchError, finalize, map, tap } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { catchError, finalize, map, takeUntil, tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
 import { FileUploadService } from '../core/services/file-upload.service';
 import { fileTypes } from '../core/utils/fileTypes';
@@ -15,6 +15,7 @@ export class FileUploadComponent {
 
   @Input() currentProject: Project | null = null;
   uploadingFile = false;
+  destroy$ = new Subject<void>();
 
   constructor(
     private readonly fileUploadService: FileUploadService
@@ -26,13 +27,18 @@ export class FileUploadComponent {
     'l'
 
     this.fileUploadService.fileUpload(files, this.currentProject?.projectId as string).pipe(
-      map(({updateId}) => console.log({updateId})),
+      takeUntil(this.destroy$),
       catchError((err) => {
         console.error("Cannot upload files", {err})
         return of(null)
       }),
       finalize(() => this.uploadingFile = false)
     ).subscribe()
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

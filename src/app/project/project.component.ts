@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { of } from 'rxjs';
-import { catchError, finalize, map, tap } from 'rxjs/operators';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { of, Subject } from 'rxjs';
+import { catchError, finalize, map, takeUntil, tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
 import { AuthService } from '../core/services/auth.service';
 import { ProjectService } from '../core/services/project.service';
@@ -17,11 +17,18 @@ export class ProjectComponent implements OnInit {
   projects: Project[] = [];
   userId = '';
   loading = false;
+  destroy$ = new Subject<void>();
+  @Output() onProjectChange = new EventEmitter();
 
   constructor(
     private readonly projectService: ProjectService,
     private readonly authService: AuthService
-  ) {}
+  ) {
+    this.projectService.currentProject$.pipe(
+      tap(() => this.onProjectChange.emit('project changed')),
+      takeUntil(this.destroy$),
+    ).subscribe();
+  }
 
   ngOnInit() {
     this.authService.user$.pipe(
@@ -33,7 +40,7 @@ export class ProjectComponent implements OnInit {
   }
 
   selectProject(project: Project) {
-    this.projectService.currentProject$.next(project);
+    this.projectService.currentProject$.next(project)
   }
 
   createProject() {
@@ -67,5 +74,10 @@ export class ProjectComponent implements OnInit {
         })
       })
     ).subscribe()
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
