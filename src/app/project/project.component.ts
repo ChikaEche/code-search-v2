@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
 import { AuthService } from '../core/services/auth.service';
 import { ProjectService } from '../core/services/project.service';
@@ -48,21 +48,20 @@ export class ProjectComponent implements OnInit {
             projectId
           }
         ];
-        this.loading = false;
         this.projectName = '';
       }),
       catchError((err) => {
-        this.loading = false;
         console.error('Error while creating project', {err})
         return of(null)
-      })
+      }),
+      finalize(() => this.loading = false)
     ).subscribe()
   }
 
   getProjects(userId: string) {
-    this.projects = [];
     this.projectService.getProjects(userId).pipe(
       tap((doc) => {
+        this.projects = [];
         doc.forEach((project) => {
           this.projects = [...this.projects, {...project.data(), projectId: project.id} as Project]
         })

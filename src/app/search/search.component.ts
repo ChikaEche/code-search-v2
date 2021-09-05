@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, tap, finalize } from 'rxjs/operators';
 import { MilisearchFile } from '../core/interfaces/milisearch-file';
@@ -22,6 +22,14 @@ export class SearchComponent {
   constructor(
     private readonly milisearchService: MeilisearchService
   ) { }
+
+  ngOnChanges({ currentProject }: SimpleChanges) {
+    const {previousValue, currentValue } = currentProject;
+    if(previousValue?.projectId !== currentValue?.projectId) {
+      this.searchKeyWord = '';
+      this.searchedValues = [];
+    }
+  }
 
   search() {
     this.searching = true;
