@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { of, Subject } from 'rxjs';
-import { catchError, finalize, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
 import { FileUploadService } from '../core/services/file-upload.service';
-import { fileTypes } from '../core/utils/fileTypes';
 import { filterFiles } from '../core/utils/filter-files';
 
 @Component({
@@ -11,7 +10,7 @@ import { filterFiles } from '../core/utils/filter-files';
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss']
 })
-export class FileUploadComponent {
+export class FileUploadComponent implements OnDestroy {
 
   @Input() currentProject: Project | null = null;
   uploadingFile = false;
@@ -24,7 +23,6 @@ export class FileUploadComponent {
   uploadFile(event: any) {
     this.uploadingFile = true;
     const files = filterFiles(event.target.files) as File[];
-    'l'
 
     this.fileUploadService.fileUpload(files, this.currentProject?.projectId as string).pipe(
       takeUntil(this.destroy$),

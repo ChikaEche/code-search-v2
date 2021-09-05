@@ -1,6 +1,6 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
-import { of } from 'rxjs';
-import { catchError, tap, finalize } from 'rxjs/operators';
+import { Component, Input, OnDestroy, SimpleChanges } from '@angular/core';
+import { of, Subject } from 'rxjs';
+import { catchError, tap, finalize, takeUntil } from 'rxjs/operators';
 import { MilisearchFile } from '../core/interfaces/milisearch-file';
 import { Project } from '../core/interfaces/project';
 import { SearchedValuesUI } from '../core/interfaces/searched-values';
@@ -12,13 +12,14 @@ import { getSearchedValues } from '../core/utils/getSearchedValues';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent {
+export class SearchComponent implements OnDestroy {
 
   @Input() currentProject: Project | null = null
   
   searchKeyWord = '';
   searchedValues: SearchedValuesUI[] = [];
   searching = false;
+  destroy$ = new Subject<void>();
   constructor(
     private readonly milisearchService: MeilisearchService
   ) { }
@@ -35,6 +36,7 @@ export class SearchComponent {
     this.searching = true;
     this.searchedValues = [];
     this.milisearchService.search(this.searchKeyWord, this.currentProject?.projectId as string).pipe(
+      takeUntil(this.destroy$),
       tap(({hits}) => {
         hits.map((result: MilisearchFile) => {
           const textArray = getSearchedValues(result.text.split(/\r\n|\n/), this.searchKeyWord)
@@ -56,6 +58,11 @@ export class SearchComponent {
         this.searching = false;
       })
     ).subscribe()
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { catchError, finalize, map, takeUntil, tap } from 'rxjs/operators';
 import { Project } from '../core/interfaces/project';
@@ -10,7 +10,7 @@ import { ProjectService } from '../core/services/project.service';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
 
   projectName = '';
   toogleProject = false;
@@ -46,6 +46,7 @@ export class ProjectComponent implements OnInit {
   createProject() {
     this.loading = true;
     this.projectService.createProject(this.projectName).pipe(
+      takeUntil(this.destroy$),
       tap((projectId) => {
         this.projects = [
           ...this.projects, 
@@ -67,6 +68,7 @@ export class ProjectComponent implements OnInit {
 
   getProjects(userId: string) {
     this.projectService.getProjects(userId).pipe(
+      takeUntil(this.destroy$),
       tap((doc) => {
         this.projects = [];
         doc.forEach((project) => {
