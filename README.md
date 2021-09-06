@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # About
 
-This project mimic's Sourcegraph, it searches a code base based on user queries (e.g import) and displays all occurrencies of the search query. Currently, the user uploads a code base from the local machine.
+This project mimics Sourcegraph, it searches a code base based on user queries (e.g import) and displays all occurrencies of the search query. Currently, the user uploads a code base from the local machine.
 
 # How it works
 
